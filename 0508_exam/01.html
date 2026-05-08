@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MBTI 여행 추천</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Pretendard', sans-serif;
+    }
+
+    body{
+      background: linear-gradient(135deg, #dbeafe, #fce7f3);
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:40px;
+    }
+
+    .container{
+      width:900px;
+      background:white;
+      border-radius:25px;
+      padding:40px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    h1{
+      text-align:center;
+      margin-bottom:30px;
+      color:#333;
+      font-size:40px;
+    }
+
+    .mbti-grid{
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:15px;
+      margin-bottom:30px;
+    }
+
+    button{
+      padding:15px;
+      border:none;
+      border-radius:15px;
+      background:#6366f1;
+      color:white;
+      font-size:16px;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    button:hover{
+      background:#4338ca;
+      transform:translateY(-3px);
+    }
+
+    .result{
+      background:#f8fafc;
+      border-radius:20px;
+      padding:30px;
+      display:none;
+    }
+
+    .result h2{
+      color:#4f46e5;
+      margin-bottom:15px;
+    }
+
+    .result p{
+      margin:10px 0;
+      font-size:18px;
+      color:#444;
+      line-height:1.6;
+    }
+
+    .emoji{
+      font-size:50px;
+      margin-bottom:15px;
+    }
+
+    @media(max-width:768px){
+      .mbti-grid{
+        grid-template-columns:repeat(2, 1fr);
+      }
+
+      .container{
+        width:100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>✈ MBTI 여행 추천 사이트</h1>
+
+    <div class="mbti-grid">
+      <button onclick="showMBTI('INFP')">INFP</button>
+      <button onclick="showMBTI('ENFP')">ENFP</button>
+      <button onclick="showMBTI('INTJ')">INTJ</button>
+      <button onclick="showMBTI('ESTP')">ESTP</button>
+
+      <button onclick="showMBTI('ISTJ')">ISTJ</button>
+      <button onclick="showMBTI('ENTJ')">ENTJ</button>
+      <button onclick="showMBTI('ISFP')">ISFP</button>
+      <button onclick="showMBTI('ESFP')">ESFP</button>
+
+      <button onclick="showMBTI('INFJ')">INFJ</button>
+      <button onclick="showMBTI('ENTP')">ENTP</button>
+      <button onclick="showMBTI('ISTP')">ISTP</button>
+      <button onclick="showMBTI('ESFJ')">ESFJ</button>
+
+      <button onclick="showMBTI('ISFJ')">ISFJ</button>
+      <button onclick="showMBTI('ENFJ')">ENFJ</button>
+      <button onclick="showMBTI('INTP')">INTP</button>
+      <button onclick="showMBTI('ESTJ')">ESTJ</button>
+    </div>
+
+    <div class="result" id="resultBox">
+      <div class="emoji" id="emoji"></div>
+      <h2 id="title"></h2>
+      <p id="travel"></p>
+      <p id="activity"></p>
+      <p id="design"></p>
+    </div>
+
+  </div>
+
+  <script>
+
+    const mbtiData = {
+
+      INFP:{
+        emoji:"🌿",
+        title:"감성 힐링 여행",
+        travel:"추천 여행지 : 제주, 교토",
+        activity:"추천 활동 : 카페, 사진 찍기, 노을 보기",
+        design:"분위기 : 파스텔 감성"
+      },
+
+      ENFP:{
+        emoji:"🎉",
+        title:"즉흥 모험 여행",
+        travel:"추천 여행지 : 도쿄, 방콕",
+        activity:"추천 활동 : 야시장, 맛집 탐방",
+        design:"분위기 : 밝고 통통 튀는 느낌"
+      },
+
+      INTJ:{
+        emoji:"🧠",
+        title:"계획형 여행",
+        travel:"추천 여행지 : 스위스, 싱가포르",
+        activity:"추천 활동 : 미술관, 건축 투어",
+        design:"분위기 : 미니멀 다크"
+      },
+
+      ESTP:{
+        emoji:"😎",
+        title:"액티비티 여행",
+        travel:"추천 여행지 : 부산, 오사카",
+        activity:"추천 활동 : 서핑, 스포츠",
+        design:"분위기 : 역동적인 스타일"
+      },
+
+      ISTJ:{
+        emoji:"📚",
+        title:"안정적인 여행",
+        travel:"추천 여행지 : 경주, 런던",
+        activity:"추천 활동 : 박물관, 역사 탐방",
+        design:"분위기 : 깔끔한 정보형"
+      },
+
+      ENTJ:{
+        emoji:"👑",
+        title:"도시 프리미엄 여행",
+        travel:"추천 여행지 : 뉴욕, 두바이",
+        activity:"추천 활동 : 쇼핑, 루프탑",
+        design:"분위기 : 블랙 & 골드"
+      },
+
+      ISFP:{
+        emoji:"🎵",
+        title:"감성 자연 여행",
+        travel:"추천 여행지 : 발리, 제주",
+        activity:"추천 활동 : 바다 산책, 음악",
+        design:"분위기 : 따뜻한 자연톤"
+      },
+
+      ESFP:{
+        emoji:"🔥",
+        title:"인싸 여행",
+        travel:"추천 여행지 : LA, 강릉",
+        activity:"추천 활동 : 파티, 포토존",
+        design:"분위기 : 화려한 SNS 감성"
+      },
+
+      INFJ:{
+        emoji:"🌙",
+        title:"사색 여행",
+        travel:"추천 여행지 : 교토, 북유럽",
+        activity:"추천 활동 : 독서, 전시회",
+        design:"분위기 : 몽환적인 느낌"
+      },
+
+      ENTP:{
+        emoji:"⚡",
+        title:"이색 체험 여행",
+        travel:"추천 여행지 : 베를린, 도쿄",
+        activity:"추천 활동 : 탐험, 체험",
+        design:"분위기 : 미래적인 네온"
+      },
+
+      ISTP:{
+        emoji:"🏕",
+        title:"자유 여행",
+        travel:"추천 여행지 : 홋카이도, 캐나다",
+        activity:"추천 활동 : 캠핑, 드라이브",
+        design:"분위기 : 심플 아웃도어"
+      },
+
+      ESFJ:{
+        emoji:"💖",
+        title:"사람 중심 여행",
+        travel:"추천 여행지 : 파리, 부산",
+        activity:"추천 활동 : 맛집, 쇼핑",
+        design:"분위기 : 따뜻한 감성"
+      },
+
+      ISFJ:{
+        emoji:"☁",
+        title:"편안한 여행",
+        travel:"추천 여행지 : 제주, 스위스",
+        activity:"추천 활동 : 조용한 카페",
+        design:"분위기 : 부드러운 베이지"
+      },
+
+      ENFJ:{
+        emoji:"📸",
+        title:"추억 공유 여행",
+        travel:"추천 여행지 : 바르셀로나, 서울",
+        activity:"추천 활동 : 공연, 사진",
+        design:"분위기 : 감성 SNS 스타일"
+      },
+
+      INTP:{
+        emoji:"💡",
+        title:"호기심 여행",
+        travel:"추천 여행지 : 베를린, 도쿄",
+        activity:"추천 활동 : 과학관, 전시",
+        design:"분위기 : 차분한 테크 느낌"
+      },
+
+      ESTJ:{
+        emoji:"🏢",
+        title:"효율 여행",
+        travel:"추천 여행지 : 싱가포르, 서울",
+        activity:"추천 활동 : 계획 코스",
+        design:"분위기 : 정리된 비즈니스 스타일"
+      }
+
+    };
+
+    function showMBTI(type){
+
+      document.getElementById("resultBox").style.display = "block";
+
+      document.getElementById("emoji").innerText = mbtiData[type].emoji;
+      document.getElementById("title").innerText = type + " - " + mbtiData[type].title;
+      document.getElementById("travel").innerText = mbtiData[type].travel;
+      document.getElementById("activity").innerText = mbtiData[type].activity;
+      document.getElementById("design").innerText = mbtiData[type].design;
+
+    }
+
+  </script>
+
+</body>
+</html>
