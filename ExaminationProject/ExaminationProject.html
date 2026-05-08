@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cloud Nine Café</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Pretendard', sans-serif;
+    }
+
+    body{
+      background:#f7f3ef;
+      color:#333;
+      overflow-x:hidden;
+    }
+
+    /* 상단바 */
+    .navbar{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      padding:20px 8%;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      background:rgba(0,0,0,0.4);
+      backdrop-filter:blur(8px);
+      z-index:1000;
+    }
+
+    .logo{
+      color:white;
+      font-size:28px;
+      font-weight:bold;
+    }
+
+    .nav-buttons{
+      display:flex;
+      align-items:center;
+      gap:15px;
+    }
+
+    #userNameDisplay {
+      color: white;
+      font-weight: bold;
+      margin-right: 10px;
+      font-size: 16px;
+    }
+
+    .nav-buttons button{
+      padding:12px 24px;
+      border:none;
+      border-radius:30px;
+      background:white;
+      color:#6b4226;
+      cursor:pointer;
+      font-size:16px;
+      transition:0.3s;
+    }
+
+    .nav-buttons button:hover{
+      transform:scale(1.08);
+    }
+
+    /* 헤더 */
+    header{
+      height:100vh;
+      background:
+      linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+      url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=1600');
+      background-size:cover;
+      background-position:center;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      color:white;
+    }
+
+    .hero h1{
+      font-size:80px;
+      animation:fadeUp 1s ease;
+    }
+
+    .hero p{
+      margin-top:20px;
+      font-size:24px;
+    }
+
+    .hero button{
+      margin-top:35px;
+      padding:15px 35px;
+      border:none;
+      border-radius:50px;
+      background:#c08457;
+      color:white;
+      font-size:18px;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    /* 메뉴 섹션 */
+    .menu{
+      padding:100px 10%;
+      text-align:center;
+    }
+
+    .menu h2{
+      font-size:50px;
+      margin-bottom:60px;
+      color:#6b4226;
+    }
+
+    .menu-container{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
+      gap:35px;
+    }
+
+    .card{
+      background:white;
+      border-radius:25px;
+      overflow:hidden;
+      box-shadow:0 10px 25px rgba(0,0,0,0.1);
+      transition:0.4s;
+      cursor:pointer;
+    }
+
+    .card:hover{
+      transform:translateY(-10px);
+    }
+
+    .card img{
+      width:100%;
+      height:300px;
+      object-fit:cover;
+      transition:0.5s;
+    }
+
+    .card-content{
+      padding:25px;
+    }
+
+    .card-content h3{
+      font-size:30px;
+      margin-bottom:10px;
+    }
+
+    .card-content p{
+      color:#777;
+    }
+
+    /* 정보 및 문의 섹션 */
+    .info{
+      padding:100px 10%;
+      background:#fff8f1;
+      text-align:center;
+    }
+
+    .info h2{
+      font-size:45px;
+      margin-bottom:40px;
+      color:#6b4226;
+    }
+
+    .info-box{
+      background:white;
+      max-width:700px;
+      margin:auto;
+      padding:40px;
+      border-radius:25px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.1);
+      margin-bottom:50px;
+    }
+
+    .info-box p{
+      margin:18px 0;
+      font-size:20px;
+    }
+
+    .contact{
+      max-width:700px;
+      margin:auto;
+      display:flex;
+      flex-direction:column;
+      gap:20px;
+    }
+
+    .contact input,
+    .contact textarea{
+      padding:18px;
+      border:1px solid #ddd;
+      border-radius:15px;
+      font-size:17px;
+    }
+
+    .contact textarea{
+      height:150px;
+      resize:none;
+    }
+
+    .contact button{
+      padding:18px;
+      border:none;
+      border-radius:15px;
+      background:#6b4226;
+      color:white;
+      font-size:18px;
+      cursor:pointer;
+      transition: 0.3s;
+    }
+
+    /* 모달 */
+    .modal{
+      display:none;
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      background:rgba(0,0,0,0.6);
+      justify-content:center;
+      align-items:center;
+      z-index:2000;
+    }
+
+    .modal-content{
+      background:white;
+      width:90%;
+      max-width:500px;
+      border-radius:25px;
+      padding:40px;
+      text-align:center;
+      position:relative;
+      animation:popup 0.4s ease;
+    }
+
+    .stamp-board {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin: 20px 0;
+      padding: 15px;
+      background: #fdfaf5;
+      border: 2px dashed #d2b48c;
+      border-radius: 15px;
+    }
+
+    .stamp-slot {
+      aspect-ratio: 1;
+      border: 2px solid #e0e0e0;
+      border-radius: 50%;
+      background: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 22px;
+    }
+
+    .stamp-slot.filled {
+      border-color: #6b4226;
+      background: #fff0e0;
+    }
+
+    .close{
+      position:absolute;
+      top:15px;
+      right:20px;
+      font-size:35px;
+      cursor:pointer;
+    }
+
+    /* 로그인/회원가입 */
+    .login-page{
+      display:none;
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      background:#f7f3ef;
+      z-index:3000;
+      justify-content:center;
+      align-items:center;
+    }
+
+    .login-box{
+      background:white;
+      padding:50px;
+      width:90%;
+      max-width:450px;
+      border-radius:25px;
+      text-align:center;
+      box-shadow:0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .login-box h2{
+      margin-bottom:30px;
+      color:#6b4226;
+      font-size:40px;
+    }
+
+    .login-box input[type="text"],
+    .login-box input[type="password"] {
+      width:100%;
+      padding:16px;
+      margin:12px 0;
+      border:none;
+      border-radius:15px;
+      background:#f2f2f2;
+      font-size:16px;
+    }
+
+    .remember-container {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 8px;
+      margin: 5px 0 15px 5px;
+      font-size: 14px;
+      color: #6b4226;
+      cursor: pointer;
+    }
+
+    .remember-container input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      margin: 0;
+    }
+
+    .login-box button{
+      width:100%;
+      padding:16px;
+      margin-top:10px;
+      border:none;
+      border-radius:15px;
+      background:#6b4226;
+      color:white;
+      font-size:17px;
+      cursor:pointer;
+    }
+
+    /* 스탬프 로그인 이동 버튼 중앙 정렬 */
+    #loginMoveBtn {
+      display: none;
+      margin: 20px auto 0 auto; /* 상단 여백 20px, 좌우 자동(가운데) */
+      padding: 15px 30px;
+      border-radius: 15px;
+      background: #6b4226;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    #loginMoveBtn:hover {
+      background: #4a2e1a;
+      transform: scale(1.05);
+    }
+
+    .coffee{
+      position:fixed;
+      right:25px;
+      bottom:20px;
+      font-size:75px;
+      cursor:pointer;
+      animation:float 2s infinite ease-in-out;
+      z-index: 500;
+    }
+
+    footer{
+      background:#3b2a1f;
+      color:white;
+      text-align:center;
+      padding:30px;
+    }
+
+    @keyframes float{ 0%, 100%{ transform:translateY(0); } 50%{ transform:translateY(-20px); } }
+    @keyframes popup{ from{ opacity:0; transform:scale(0.7); } to{ opacity:1; transform:scale(1); } }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <div class="logo">☁ Cloud Nine Café</div>
+    <div class="nav-buttons">
+      <span id="userNameDisplay" style="display:none;"></span>
+      <button onclick="openLoginPage()" id="loginBtn">로그인</button>
+      <button onclick="openSignupPage()" id="signupBtn">회원가입</button>
+      <button onclick="logout()" id="logoutBtn" style="display:none;">로그아웃</button>
+    </div>
+  </nav>
+
+  <header>
+    <div class="hero">
+      <h1>Cloud Nine Café</h1>
+      <p>구름 위에서 마시는 한 잔의 여유 ☁☕</p>
+      <button onclick="scrollMenu()">MENU 보기</button>
+    </div>
+  </header>
+
+  <section class="menu" id="menu">
+    <h2>Signature Coffee</h2>
+    <div class="menu-container">
+      <div class="card" onclick="openModal('Americano', '깊고 깔끔한 맛', '고소한 원두 향', '부드러운 바디감')">
+        <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=1200">
+        <div class="card-content"><h3>Americano</h3><p>5,000원</p></div>
+      </div>
+      <div class="card" onclick="openModal('Cafe Latte', '부드럽고 달콤한 맛', '우유의 고소한 향', '크리미한 풍미')">
+        <img src="https://images.unsplash.com/photo-1521302080334-4bebac2763a6?q=80&w=1200">
+        <div class="card-content"><h3>Cafe Latte</h3><p>5,500원</p></div>
+      </div>
+      <div class="card" onclick="openModal('Cafe Mocha', '달콤한 초코 맛', '초코와 커피 향', '부드러운 풍미')">
+        <img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?q=80&w=1200">
+        <div class="card-content"><h3>Cafe Mocha</h3><p>6,000원</p></div>
+      </div>
+      <div class="card" onclick="openModal('Vanilla Latte', '달콤한 바닐라 맛', '은은한 바닐라 향', '부드러운 거품')">
+        <img src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?q=80&w=1200">
+        <div class="card-content"><h3>Vanilla Latte</h3><p>5,800원</p></div>
+      </div>
+      <div class="card" onclick="openModal('Caramel Macchiato', '달콤쌉싸름한 맛', '카라멜 향', '진한 카라멜 풍미')">
+        <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?q=80&w=1200">
+        <div class="card-content"><h3>Caramel Macchiato</h3><p>6,000원</p></div>
+      </div>
+      <div class="card" onclick="openModal('Cold Brew', '시원하고 깔끔한 맛', '깊은 원두 향', '낮은 산미')">
+        <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=1200">
+        <div class="card-content"><h3>Cold Brew</h3><p>5,500원</p></div>
+      </div>
+      <div class="card" onclick="openModal('Hazelnut Latte', '고소하고 달콤한 맛', '헤이즐넛 향', '진한 풍미')">
+        <img src="https://images.unsplash.com/photo-1494314671902-399b18174975?q=80&w=1200">
+        <div class="card-content"><h3>Hazelnut Latte</h3><p>5,800원</p></div>
+      </div>
+      <div class="card" onclick="openModal('Espresso', '강렬한 맛', '진한 원두 향', '깊은 풍미')">
+        <img src="https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?q=80&w=1200">
+        <div class="card-content"><h3>Espresso</h3><p>5,000원</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="menu">
+    <h2>Dessert</h2>
+    <div class="menu-container">
+      <div class="card" onclick="openModal('Croffle', '겉바속촉 시나몬 맛', '버터 풍미', '시럽의 달콤함')">
+        <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=1200">
+        <div class="card-content"><h3>Croffle</h3><p>6,000원</p></div>
+      </div>
+      <div class="card" onclick="openModal('Cheese Cake', '진한 치즈 맛', '꾸덕한 풍미', '부드러운 식감')">
+        <img src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?q=80&w=1200">
+        <div class="card-content"><h3>Cheese Cake</h3><p>6,500원</p></div>
+      </div>
+      <div class="card" onclick="openModal('Macaron', '다양한 달콤함', '쫀득한 식감', '필링의 조화')">
+        <img src="https://images.unsplash.com/photo-1558326567-98ae2405596b?q=80&w=1200">
+        <div class="card-content"><h3>Macaron</h3><p>5,500원</p></div>
+      </div>
+      <div class="card" onclick="openModal('Tiramisu', '에스프레소 & 크림 맛', '카카오 향', '입안에서 녹는 부드러움')">
+        <img src="https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?q=80&w=1200">
+        <div class="card-content"><h3>Tiramisu</h3><p>6,500원</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="info">
+    <h2>Store Information</h2>
+    <div class="info-box">
+      <p>📍 서울특별시 마포구 Cloud-ro 21</p>
+      <p>📞 02-1234-5678</p>
+      <p>🕒 AM 10:00 ~ PM 10:00</p>
+      <p>📧 cloudninecafe@gmail.com</p>
+    </div>
+    <div class="contact">
+      <input type="text" id="contactName" placeholder="이름 입력">
+      <input type="email" id="contactEmail" placeholder="이메일 입력">
+      <textarea id="contactMsg" placeholder="문의 내용을 입력하세요"></textarea>
+      <button onclick="sendMessage()">문의하기</button>
+    </div>
+  </section>
+
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 id="coffeeName"></h2>
+      <p id="taste" style="margin-top:15px;"></p>
+      <p id="scent"></p>
+      <p id="texture"></p>
+    </div>
+  </div>
+
+  <div class="modal" id="couponModal">
+    <div class="modal-content">
+      <span class="close" onclick="closeCoupon()">&times;</span>
+      <h2>☕ 스탬프 카드</h2>
+      <p id="couponText" style="margin-top:10px; font-weight:bold;"></p>
+      <div id="stampGrid" class="stamp-board"></div>
+      <div id="couponInfo" style="margin-top:10px; font-size:16px; color:#6b4226;"></div>
+      <button onclick="openLoginPage(); closeCoupon();" id="loginMoveBtn">로그인 하러 가기</button>
+    </div>
+  </div>
+
+  <div class="login-page" id="loginPage">
+    <div class="login-box">
+      <h2>로그인</h2>
+      <input type="text" id="loginId" placeholder="아이디 입력">
+      <input type="password" id="loginPw" placeholder="비밀번호 입력 (예: 1234)">
+      
+      <div class="remember-container" onclick="document.getElementById('saveIdCheck').click();">
+        <input type="checkbox" id="saveIdCheck" onclick="event.stopPropagation();">
+        <span>아이디 저장</span>
+      </div>
+
+      <button onclick="login()">로그인</button>
+      <button onclick="closeLoginPage()" style="background:#ccc; color:#333;">뒤로가기</button>
+    </div>
+  </div>
+
+  <div class="login-page" id="signupPage">
+    <div class="login-box">
+      <h2>회원가입</h2>
+      <input type="text" placeholder="아이디 입력">
+      <input type="password" placeholder="비밀번호 입력">
+      <button onclick="signup()">회원가입</button>
+      <button onclick="closeSignupPage()">뒤로가기</button>
+    </div>
+  </div>
+
+  <div class="coffee" onclick="openCoupon()">☕</div>
+  <footer>ⓒ 2026 Cloud Nine Café</footer>
+
+  <script>
+    let isLogin = false;
+    let couponCount = 5;
+    const CORRECT_PW = "1234"; 
+
+    window.onload = function() {
+      const savedId = localStorage.getItem("savedCloudId");
+      if (savedId) {
+        document.getElementById("loginId").value = savedId;
+        document.getElementById("saveIdCheck").checked = true;
+      }
+    };
+
+    function scrollMenu(){ document.getElementById("menu").scrollIntoView({ behavior:"smooth" }); }
+
+    function openModal(name, taste, scent, texture){
+      document.getElementById("modal").style.display = "flex";
+      document.getElementById("coffeeName").innerText = name;
+      document.getElementById("taste").innerText = "🍴 맛 : " + taste;
+      document.getElementById("scent").innerText = "🌿 향 : " + scent;
+      document.getElementById("texture").innerText = "✨ 특징 : " + texture;
+    }
+    function closeModal(){ document.getElementById("modal").style.display = "none"; }
+
+    function openLoginPage(){ 
+      document.getElementById("loginPage").style.display = "flex"; 
+      document.getElementById("loginPw").value = "";
+      if(!document.getElementById("saveIdCheck").checked) document.getElementById("loginId").value = "";
+    }
+    function closeLoginPage(){ document.getElementById("loginPage").style.display = "none"; }
+    function openSignupPage(){ document.getElementById("signupPage").style.display = "flex"; }
+    function closeSignupPage(){ document.getElementById("signupPage").style.display = "none"; }
+
+    function signup(){ alert("회원가입이 완료되었습니다!"); closeSignupPage(); }
+
+    function sendMessage(){
+      const name = document.getElementById("contactName").value;
+      if(name){
+        alert(name + "님의 문의가 전송되었습니다 ☁☕");
+        document.getElementById("contactName").value = "";
+        document.getElementById("contactEmail").value = "";
+        document.getElementById("contactMsg").value = "";
+      } else { alert("이름을 입력해주세요."); }
+    }
+
+    function login(){
+      const id = document.getElementById("loginId").value;
+      const pw = document.getElementById("loginPw").value;
+      const isSaveChecked = document.getElementById("saveIdCheck").checked;
+
+      if(!id || !pw) { alert("아이디와 비밀번호를 모두 입력하세요."); return; }
+
+      if(pw === CORRECT_PW){
+        isLogin = true;
+        if(isSaveChecked) localStorage.setItem("savedCloudId", id);
+        else localStorage.removeItem("savedCloudId");
+
+        alert(id + "님 로그인되었습니다 ☕");
+        closeLoginPage();
+
+        document.getElementById("userNameDisplay").innerText = id + "님";
+        document.getElementById("userNameDisplay").style.display = "inline-block";
+        document.getElementById("loginBtn").style.display = "none";
+        document.getElementById("signupBtn").style.display = "none";
+        document.getElementById("logoutBtn").style.display = "inline-block";
+      } else {
+        alert("비밀번호가 틀렸습니다. 다시 확인해주세요.");
+        document.getElementById("loginPw").value = "";
+      }
+    }
+
+    function logout(){
+      isLogin = false;
+      alert("로그아웃 되었습니다.");
+      document.getElementById("userNameDisplay").style.display = "none";
+      document.getElementById("loginBtn").style.display = "inline-block";
+      document.getElementById("signupBtn").style.display = "inline-block";
+      document.getElementById("logoutBtn").style.display = "none";
+
+      if(!document.getElementById("saveIdCheck").checked) document.getElementById("loginId").value = "";
+      document.getElementById("loginPw").value = "";
+    }
+
+    function openCoupon(){
+      const modal = document.getElementById("couponModal");
+      const grid = document.getElementById("stampGrid");
+      modal.style.display = "flex";
+      grid.innerHTML = "";
+
+      if(isLogin){
+        document.getElementById("couponText").innerText = "스탬프 현황 : " + couponCount + " / 10";
+        document.getElementById("couponInfo").innerText = "10개를 모으면 아메리카노 1잔 무료!";
+        document.getElementById("loginMoveBtn").style.display = "none";
+        grid.style.display = "grid";
+        for(let i=1; i<=10; i++){
+          const slot = document.createElement("div");
+          slot.className = "stamp-slot" + (i <= couponCount ? " filled" : "");
+          slot.innerText = i <= couponCount ? "☕" : "";
+          grid.appendChild(slot);
+        }
+      }else{
+        document.getElementById("couponText").innerText = "로그인이 필요합니다.";
+        document.getElementById("couponInfo").innerText = "";
+        document.getElementById("loginMoveBtn").style.display = "block"; // 버튼 보이기
+        grid.style.display = "none";
+      }
+    }
+    function closeCoupon(){ document.getElementById("couponModal").style.display = "none"; }
+
+    window.onclick = function(e) { if(e.target.classList.contains('modal')) e.target.style.display="none"; }
+  </script>
+
+</body>
+</html>
