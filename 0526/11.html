@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM</title>
+    <script>
+        window.onload = function() {
+            let firstH1 = document.getElementById("First_h1");
+            firstH1.style.color = "Blue";
+            firstH1.style.backgroundColor = "red";
+            firstH1.style.innerHTML = "첫 번째 h1 요소입니다";
+        }
+        function darkmode() {
+            document.body.style.backgroundColor = "black";
+            document.body.style.color = "white";
+            document.getElementById("darkmode").style.color = "lightgray";
+            document.getElementById("darkmode").style.backgroundColor = "gray";
+            document.querySelector("button").style.backgroundColor = "darkgray";
+            document.querySelector("button").style.color = "lightgray";
+        }
+    </script>
+</head>
+<body>
+    <h1 id = "First_h1">DOM</h1>
+    <h1>: 요소객체가 로드된 이후에 요소객체의 css 스타일을 변경할 수 있습니다</h1>
+    <button onclick="darkmode()">다크모드</button>
+    <h1 id = "darkmode">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cupiditate porro dolores iure minima. Nulla, laboriosam eligendi? Atque et nulla, eaque odio voluptas ipsam dicta dolores quod quia error harum assumenda?</h1>
+</body>
+</html>
