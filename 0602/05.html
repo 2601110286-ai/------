@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1초 간격으로 익명함수 호출하여 문자열 시계 만들기</title>
+    <script>
+
+        window.onload = function() {
+            let clock = document.getElementById("clock");
+
+            //1초마다 익명함수 호출
+            //2026년 6월 2일 16:54:20
+            setInterval(function() {
+                let now = new Date();
+                clock.innerHTML = now.getFullYear() + "년 " + (now.getMonth() + 1) + "월 " + now.getDate() + "일 " + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
+            }, 1000);
+        }
+
+    </script>
+</head>
+<body>
+    <h1 id = "clock"></h1>
+</body>
+</html>
