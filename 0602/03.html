@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>요소객체 속성 조작</title>
+    <script>
+        //textContent, innerHTML
+        window.onload = function() {
+                let img1 = document.getElementById("img1");
+
+                //img1.src = "https://placehold.co/300x200";
+                img1.src = "imgs/사진2.jpg";
+                img1.width = 300;
+                img1.height = 200;
+            }
+
+            function changeImg(btn) {
+                if(btn.innerText == "구름이미지 변경") {
+                    document.getElementById("img1").src = "imgs/사진5.jpg";
+                    btn.innerText = "배경이미지 변경";
+                } else {
+                    document.getElementById("img1").src = "imgs/사진2.jpg";
+                    btn.innerText = "구름이미지 변경";
+                }
+            }
+    </script>
+</head>
+<body>
+    <button onclick = "changeImg(this)">구름이미지 변경</button>
+    
+    <br><br>
+    <img id = "img1">
+</body>
+</html>
