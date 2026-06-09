@@ -9,11 +9,17 @@
     <!-- jQuery 문법으로 코드 작성 -->
     <script>
         $(document).ready(function() {
-            alert("jQuery 라이브러리가 정상적으로 로드되었습니다.");
+            $('#second').css("color", "magenta");
+            $('#second').css("background-color", "black");
+            $(".third").css("color", "white");
+            $(".third").css("background-color", "magenta");
         });
     </script>
 </head>
 <body>
-    
+    <h1>jQuery 라이브러리 설정 및 문법</h1>
+    <h1 id="second">jQuery 라이브러리 설정 및 문법</h1>
+    <h1 class="third">jQuery 라이브러리 설정 및 문법</h1>
+    <img src="img/과일1.png" width="200" id="img1"><br>
 </body>
 </html>
