@@ -8,26 +8,29 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
     <script>
-        $(document).ready(function(){
+        $(document).ready
+            (function(){
 
-            $("h1").click(function(){
-                $(this).css({
-                    backgroundColor: "red",
-                    color: "white",
-                    width: "200px",
-                    height: "50px"
+                $("h1").click
+                (function(){
+                    $(this).css({
+                        backgroundColor: "red",
+                        color: "white",
+                        width: "200px",
+                        height: "50px"
+                    });
                 });
-            });
 
-            $("h1").mouseout(function(){
-                $(this).css({
-                    backgroundColor: "",
-                    color: "",
-                    width: "",
-                    height: ""
-                });
-            });
-
+                $("h1").mouseout
+                    (function(){
+                        $(this).css({
+                            backgroundColor: "",
+                            color: "",
+                            width: "",
+                            height: ""
+                        });
+                    }
+                );
         });
     </script>
 </head>
